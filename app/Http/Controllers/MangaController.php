@@ -25,7 +25,7 @@ class MangaController extends Controller
     public function index(Request $request): JsonResponse
     {
         $data = $request->only(['category_id', 'search_text', 'type']);
-       $data['manga_ids'] = [];
+        $data['manga_ids'] = [];
 
         $orderListFiled = ['id', 'title', 'description', 'created_at', 'updated_at'];
         $orderBy = Helper::orderBy($request->get('sort_by'), $request->get('sort_direction'), $orderListFiled);
@@ -52,10 +52,31 @@ class MangaController extends Controller
         return $this->successWithPaginate(__('general.success'), $mangaList);
     }
 
-    public function show(int $mangaId): JsonResponse
+    // public function show(string $mangaId): JsonResponse
+    // {
+    //     $manga = $this->mangaRepository->getById($mangaId);
+    //     if (empty($manga)) {
+    //         return $this->error(__('general.not_found'), [], 404);
+    //     }
+
+    //     $manga = $manga->toArray();
+    //     $viewer = $this->mangaRepository->getAndUpdateViewerManga($mangaId);
+    //     $countViewer = !empty($viewer->count_viewer) ? $viewer->count_viewer : 0;
+    //     $manga = array_merge($manga, ['viewer' => $countViewer]);
+
+    //     return $this->success(__('general.success'), $manga, 200);
+    // }
+    public function show($mangaId): JsonResponse
     {
+        $strMangaId = explode("---", $mangaId);
+        $mangaId = $strMangaId[1] ?? null;
+        $slug = $strMangaId[0] ?? null;
+        if (empty($mangaId) || empty($slug)) {
+            return $this->error(__('general.not_found'), [], 404);
+        }
+
         $manga = $this->mangaRepository->getById($mangaId);
-        if (empty($manga)) {
+        if (empty($manga) || $slug !== $manga->slug) {
             return $this->error(__('general.not_found'), [], 404);
         }
 

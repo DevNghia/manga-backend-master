@@ -25,8 +25,8 @@ class MangaRepository implements MangaRepositoryInterface
             ->where('is_active', true);
         $searchText = $conditions['search_text'] ?? null;
         if (!empty($searchText)) {
-            $query = $query->where('title', 'like', '%'. $searchText . '%')
-                ->orWhere('description', 'like', '%'. $searchText . '%');
+            $query = $query->where('title', 'like', '%' . $searchText . '%')
+                ->orWhere('description', 'like', '%' . $searchText . '%');
         }
 
         if (!empty($conditions['manga_ids'])) {
@@ -45,16 +45,17 @@ class MangaRepository implements MangaRepositoryInterface
     public function getById(int $mangaId): ?Manga
     {
         return $this->model
-            ->with(['authors:id,name',
+            ->with([
+                'authors:id,name',
                 'categories:id,title,is_active,description',
                 'chapters:id,manga_id,name,is_active,thumbnail_count,created_at,updated_at'
             ])
-//            ->whereHas('categories', function ($q) {
-//                $q->where('is_active', true);
-//            })
-//            ->whereHas('characters', function ($q) {
-//                $q->where('is_active', true);
-//            })
+            //            ->whereHas('categories', function ($q) {
+            //                $q->where('is_active', true);
+            //            })
+            //            ->whereHas('characters', function ($q) {
+            //                $q->where('is_active', true);
+            //            })
             ->where('id', $mangaId)
             ->where('is_active', true)
             ->first();

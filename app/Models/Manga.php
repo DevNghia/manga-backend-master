@@ -44,9 +44,18 @@ class Manga extends Model
         'description' => 'string',
     ];
 
+    protected $appends = [
+        'manga_id'
+    ];
+
+    public function getMangaIdAttribute()
+    {
+        return $this->slug . '---' . $this->id;
+    }
+
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class,  MangaCategory::class,'manga_id', 'category_id');
+        return $this->belongsToMany(Category::class,  MangaCategory::class, 'manga_id', 'category_id');
     }
 
     public function chapters(): HasMany
@@ -56,7 +65,7 @@ class Manga extends Model
 
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany( Author::class, 'manga_authors', 'manga_id', 'author_id');
+        return $this->belongsToMany(Author::class, 'manga_authors', 'manga_id', 'author_id');
     }
 
     public function viewer(): BelongsTo
