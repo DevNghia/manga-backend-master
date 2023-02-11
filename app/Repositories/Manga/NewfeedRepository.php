@@ -4,21 +4,21 @@ namespace App\Repositories\Manga;
 
 use App\Helpers\Helper;
 use App\Helpers\Repository\BaseRepository;
-use App\Models\Favorite;
+use App\Models\NewFeed;
 use Illuminate\Database\Eloquent\Collection;
 
-class FavoriteRepository extends BaseRepository implements FavoriteRepositoryInterface
+class NewFeedRepository extends BaseRepository implements NewFeedRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Favorite $model)
+    public function __construct(NewFeed $model)
     {
         $this->model = $model;
     }
 
-    public function findUserFavorites(int $userId, array $orderBy): Collection
+    public function findUserNewfeeds(int $userId, array $orderBy): Collection
     {
-        $query = Favorite::query()
+        $query = NewFeed::query()
             ->with(['manga:id,type,title,slug,status,image,description'])
             ->where('user_id', $userId);
 
@@ -30,10 +30,10 @@ class FavoriteRepository extends BaseRepository implements FavoriteRepositoryInt
         return $query->get();
     }
 
-    public function getByFavoriteId(int $userId, int $favoriteId): ?Favorite
+    public function getByNewfeedId(int $userId, int $newfeedId): ?NewFeed
     {
-        return Favorite::query()
-            ->where('id', $favoriteId)
+        return NewFeed::query()
+            ->where('id', $newfeedId)
             ->where('user_id', $userId)
             ->first();
     }

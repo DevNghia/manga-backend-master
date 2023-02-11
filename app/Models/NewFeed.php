@@ -7,7 +7,7 @@ use App\Models\Eloquent\Model;
 
 class NewFeed extends Model
 {
-    protected $table = 'favorites';
+    protected $table = 'new_feeds';
 
     protected $fillable = [
         'user_id',

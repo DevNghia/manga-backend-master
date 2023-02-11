@@ -14,6 +14,8 @@ use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Comment\CommentRepositoryInterface;
 use App\Repositories\Manga\FavoriteRepository;
 use App\Repositories\Manga\FavoriteRepositoryInterface;
+use App\Repositories\Manga\NewFeedRepository;
+use App\Repositories\Manga\NewFeedRepositoryInterface;
 use App\Repositories\Manga\CategoryRepository;
 use App\Repositories\Manga\CategoryRepositoryInterface;
 use App\Repositories\Manga\ChapterRepository;
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
         $this->app->bind(FavoriteRepositoryInterface::class, FavoriteRepository::class);
         $this->app->bind(DownloadRepositoryInterface::class, DownloadRepository::class);
+        $this->app->bind(NewFeedRepositoryInterface::class, NewFeedRepository::class);
     }
 
     /**

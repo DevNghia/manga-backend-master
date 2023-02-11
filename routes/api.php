@@ -31,5 +31,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     require __DIR__ . '/api/user.php';
     require __DIR__ . '/api/comment.php';
     require __DIR__ . '/api/favorite.php';
+    require __DIR__ . '/api/newfeed.php';
     require __DIR__ . '/api/download.php';
 });
