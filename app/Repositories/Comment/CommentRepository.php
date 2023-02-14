@@ -24,7 +24,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
             ->where('is_active', true);
 
         if (!empty($searchText)) {
-            $query = $query->where('content', 'like', '%'. $searchText . '%');
+            $query = $query->where('content', 'like', '%' . $searchText . '%');
         }
 
         if (!empty($orderBy)) {

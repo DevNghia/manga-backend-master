@@ -12,13 +12,15 @@ class NewFeed extends Model
     protected $fillable = [
         'user_id',
         'manga_id',
-        'chapter_id'
+        'chapter_id',
+        'comment_id'
     ];
 
     protected $casts = [
         'manga_id' => 'integer',
         'user_id' => 'integer',
-        'chapter_id' => 'integer'
+        'chapter_id' => 'integer',
+        'comment_id' => 'integer'
     ];
 
     public function manga(): BelongsTo

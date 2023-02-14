@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('manga_id');
+            $table->unsignedBigInteger('chapter_id');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->text('content');
             $table->tinyInteger('is_active')->nullable()->default(true);

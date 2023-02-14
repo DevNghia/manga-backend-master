@@ -15,6 +15,7 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'manga_id',
+        'chapter_id',
         'parent_id',
         'content',
         'is_active',

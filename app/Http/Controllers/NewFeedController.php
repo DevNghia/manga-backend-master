@@ -47,6 +47,7 @@ class NewFeedController extends Controller
             'user_id' => $this->currentUser->id,
             'manga_id' => $mangaId,
             'chapter_id' => $character->id,
+            'comment_id' => 0,
         ]);
         // }
         if (empty($character)) {
