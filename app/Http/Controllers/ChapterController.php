@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Repositories\Manga\MangaRepositoryInterface;
+use App\Repositories\Manga\NewFeedRepositoryInterface;
 use App\Repositories\Manga\ChapterRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,11 +12,15 @@ use Illuminate\Http\Request;
 class ChapterController extends Controller
 {
     protected $characterRepository;
+    protected $newfeedRepository;
+    protected $mangaRepository;
 
-    public function __construct(ChapterRepositoryInterface $characterRepository)
+    public function __construct(ChapterRepositoryInterface $characterRepository, NewFeedRepositoryInterface  $newfeedRepository, MangaRepositoryInterface $mangaRepository)
     {
         parent::__construct();
         $this->characterRepository = $characterRepository;
+        $this->newfeedRepository = $newfeedRepository;
+        $this->mangaRepository = $mangaRepository;
     }
 
     public function index(int $mangaId, Request $request): JsonResponse
@@ -38,6 +44,7 @@ class ChapterController extends Controller
         $character = $character->toArray();
         $countViewer = !empty($viewer->count_viewer) ? $viewer->count_viewer : 0;
         $character = array_merge($character, ['viewer' => $countViewer]);
+
 
         return $this->success(__('general.success'), $character);
     }

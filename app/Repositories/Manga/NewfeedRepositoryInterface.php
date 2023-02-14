@@ -9,6 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 interface NewFeedRepositoryInterface extends BaseRepositoryInterface
 {
     public function findUserNewfeeds(int $userId, array $orderBy): Collection;
-
     public function getByNewfeedId(int $userId, int $newfeedId): ?NewFeed;
+    public function getAndUpdateNewfeedId(int $userId, int $newfeedId, int $mangaId, int $chapterId): ?NewFeed;
 }

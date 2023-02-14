@@ -50,11 +50,13 @@ class UserController extends Controller
             $password = $request->input('old_password');
             $newPassword = $request->input('password');
             if (!Hash::check($password, $user->password)) {
-                return $this->error(__('authentication.password_not_correct_error'),
+                return $this->error(
+                    __('authentication.password_not_correct_error'),
                     ['password' => [
                         __('authentication.password_not_correct_error')
                     ]],
-                    400);
+                    400
+                );
             }
             if ($password === $newPassword) {
                 return $this->error(__('password.airspace'));
@@ -69,8 +71,7 @@ class UserController extends Controller
             }
 
             return $this->success(__('general.success'), true);
-        }
-        catch (\Exception $error) {
+        } catch (\Exception $error) {
             Log::error($error->getMessage());
             Log::error($error->getTraceAsString());
 

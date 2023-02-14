@@ -27,7 +27,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('refresh-token', [AuthController::class, 'refreshToken']);
 
     Route::post('logout', [AuthController::class, 'logout']);
-
     require __DIR__ . '/api/user.php';
     require __DIR__ . '/api/comment.php';
     require __DIR__ . '/api/favorite.php';

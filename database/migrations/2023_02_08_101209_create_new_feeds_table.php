@@ -17,6 +17,7 @@ class CreateNewFeedsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('manga_id');
+            $table->unsignedBigInteger('chapter_id');
             $table->integer('created_at');
             $table->integer('updated_at');
         });

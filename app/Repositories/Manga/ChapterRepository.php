@@ -5,17 +5,20 @@ namespace App\Repositories\Manga;
 use App\Helpers\Helper;
 use App\Models\Chapter;
 use App\Models\ChapterViewer;
+
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ChapterRepository implements ChapterRepositoryInterface
 {
+
+
     public function getMangaChapters(int $mangaId, ?string $searchText, array $orderBy): LengthAwarePaginator
     {
         $query = Chapter::query()
             ->where('manga_id', $mangaId)
             ->where('is_active', true);
         if (!empty($searchText)) {
-            $query = $query->where('name', 'like', '%'. $searchText . '%');
+            $query = $query->where('name', 'like', '%' . $searchText . '%');
         }
 
         if (!empty($orderBy)) {

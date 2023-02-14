@@ -11,16 +11,26 @@ class NewFeed extends Model
 
     protected $fillable = [
         'user_id',
-        'manga_id'
+        'manga_id',
+        'chapter_id'
     ];
 
     protected $casts = [
         'manga_id' => 'integer',
         'user_id' => 'integer',
+        'chapter_id' => 'integer'
     ];
 
     public function manga(): BelongsTo
     {
         return $this->belongsTo(Manga::class, 'manga_id', 'id');
+    }
+    public function chapter(): BelongsTo
+    {
+        return $this->belongsTo(ChapterThumbnails::class, 'chapter_id', 'id');
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Repositories\Manga;
 
 use App\Models\Chapter;
 use App\Models\ChapterViewer;
+use App\Models\NewFeed;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ChapterRepositoryInterface
@@ -20,12 +21,12 @@ interface ChapterRepositoryInterface
      * @param int $chapterId
      * @return Chapter|null
      */
-    public function getById(int $chapterId):? Chapter;
+    public function getById(int $chapterId): ?Chapter;
 
     /**
      * @param int $mangaId
      * @param int $chapterId
      * @return ChapterViewer|null
      */
-    public function getAndUpdateViewerChapter(int $mangaId, int $chapterId):? ChapterViewer;
+    public function getAndUpdateViewerChapter(int $mangaId, int $chapterId): ?ChapterViewer;
 }

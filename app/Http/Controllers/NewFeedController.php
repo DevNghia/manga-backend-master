@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\Manga\MangaRepositoryInterface;
 use App\Repositories\Manga\NewFeedRepositoryInterface;
+use App\Repositories\Manga\ChapterRepositoryInterface;
 use App\Requests\Manga\NewfeedRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,61 +13,58 @@ use App\Helpers\Helper;
 class NewFeedController extends Controller
 {
     protected $newfeedRepository;
-
+    protected $characterRepository;
     protected $mangaRepository;
 
-    public function __construct(NewFeedRepositoryInterface  $newfeedRepository, MangaRepositoryInterface $mangaRepository)
+    public function __construct(ChapterRepositoryInterface $characterRepository, NewFeedRepositoryInterface  $newfeedRepository, MangaRepositoryInterface $mangaRepository)
     {
         parent::__construct();
         $this->newfeedRepository = $newfeedRepository;
         $this->mangaRepository = $mangaRepository;
+        $this->characterRepository = $characterRepository;
     }
 
     public function index(Request $request): JsonResponse
     {
-        $orderListFiled = ['id', 'created_at', 'updated_at'];
-        $orderBy = Helper::orderBy($request->get('sort_by'), $request->get('sort_direction'), $orderListFiled);
+        $newfeedListFiled = ['id', 'created_at', 'updated_at'];
+        $newfeed = Helper::orderBy($request->get('sort_by'), $request->get('sort_direction'), $newfeedListFiled);
 
-        $newfeedList = $this->newfeedRepository->findUserNewfeeds($this->currentUser->id, $orderBy);
+        $newfeedList = $this->newfeedRepository->findUserNewfeeds($this->currentUser->id, $newfeed);
 
         return $this->success(__('general.success'), $newfeedList);
     }
 
 
-    public function store(NewfeedRequest $request, int $mangaId): JsonResponse
+    public function show(int $mangaId, int $id): JsonResponse
     {
-        $isNewfeed = $request->boolean('is_newfeed', false);
-
         $manga = $this->mangaRepository->getById($mangaId);
         if (empty($manga)) {
             return $this->error(__('general.not_found'), [], 404);
         }
+        $character = $this->characterRepository->getById($id);
 
-        $newfeed = $this->newfeedRepository->getByNewfeedId($this->currentUser->id, $mangaId);
-        if (empty($newfeed) && empty($isNewfeed)) {
+        $this->newfeedRepository->create([
+            'user_id' => $this->currentUser->id,
+            'manga_id' => $mangaId,
+            'chapter_id' => $character->id,
+        ]);
+        // }
+        if (empty($character)) {
             return $this->error(__('general.not_found'), [], 404);
         }
 
-        if (empty($isNewfeed) && !empty($newfeed)) {
-            $newfeedDel = $this->newfeedRepository->deleteById($newfeed->id);
-            if (empty($newfeedDel)) {
-                return $this->error(__('general.server_error'), [], 500);
-            }
+        $viewer = $this->characterRepository->getAndUpdateViewerChapter($character->manga_id, $id);
+        $character = $character->toArray();
+        $countViewer = !empty($viewer->count_viewer) ? $viewer->count_viewer : 0;
+        $character = array_merge($character, ['viewer' => $countViewer]);
 
-            return $this->success(__('general.success'), $newfeedDel);
-        }
 
-        if (!empty($isNewfeed) && empty($newfeed)) {
-            $newfeed = $this->newfeedRepository->create([
-                'user_id' => $this->currentUser->id,
-                'manga_id' => $mangaId
-            ]);
+        return $this->success(__('general.success'), $character);
+    }
+    public function detail(int $id): JsonResponse
+    {
+        $newfeedDetail = $this->newfeedRepository->getByNewfeedId($this->currentUser->id, $id);
 
-            if (empty($newfeed)) {
-                return $this->error(__('general.server_error'), [], 500);
-            }
-        }
-
-        return $this->success(__('general.success'), $newfeed);
+        return $this->success(__('general.success'), $newfeedDetail);
     }
 }

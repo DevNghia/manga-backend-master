@@ -5,6 +5,6 @@ use App\Http\Controllers\NewFeedController;
 
 Route::prefix('newfeed')->group(function () {
     Route::get('', [NewFeedController::class, 'index']);
-
-    Route::post('{id}/manga', [NewFeedController::class, 'store']);
+    Route::get('{mangaId}/chapter/{id}', [NewFeedController::class, 'show']);
+    Route::get('{id}', [NewFeedController::class, 'detail']);
 });
