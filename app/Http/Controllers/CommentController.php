@@ -64,7 +64,7 @@ class CommentController extends Controller
             'user_id' => $this->currentUser->id,
             'manga_id' => $mangaId,
             'chapter_id' => 0,
-            'comment_id' => 0,
+            'comment_id' => $comment->id,
         ]);
         $comment = $comment->load('user:id,name,email,phone_number,avatar,provider,is_active,last_login');
 
@@ -95,8 +95,8 @@ class CommentController extends Controller
         $this->newfeedRepository->create([
             'user_id' => $this->currentUser->id,
             'manga_id' => $mangaId,
-            'chapter_id' => 0,
-            'comment_id' => 0,
+            'chapter_id' => $chapterId,
+            'comment_id' => $comment->id,
         ]);
         $comment = $comment->load('user:id,name,email,phone_number,avatar,provider,is_active,last_login');
 

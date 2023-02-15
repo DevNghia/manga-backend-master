@@ -35,4 +35,8 @@ class NewFeed extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function comment(): BelongsTo
+    {
+        return $this->belongsTo(comment::class, 'comment_id', 'id');
+    }
 }

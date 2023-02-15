@@ -27,6 +27,7 @@ class NewFeedRepository extends BaseRepository implements NewFeedRepositoryInter
         $query = NewFeed::query()
             ->with(['user:id,name,email,avatar,is_active'])
             ->with(['chapter:id,thumbnail_url,is_active'])
+            ->with(['comment:id,user_id,manga_id,chapter_id,parent_id,content,is_active'])
             ->where('user_id', $userId);
 
         if (!empty($orderBy)) {
