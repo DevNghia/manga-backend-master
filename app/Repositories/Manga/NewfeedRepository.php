@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Manga;
 
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Helpers\Repository\BaseRepository;
 use App\Models\NewFeed;
 
@@ -22,7 +22,7 @@ class NewFeedRepository extends BaseRepository implements NewFeedRepositoryInter
         $this->currentUser = Auth::user();
     }
 
-    public function findUserNewfeeds(int $userId, array $orderBy): Collection
+    public function findUserNewfeeds(int $userId, array $orderBy): LengthAwarePaginator
     {
         $query = NewFeed::query()
             ->with(['user:id,name,email,avatar,is_active'])
@@ -35,7 +35,7 @@ class NewFeedRepository extends BaseRepository implements NewFeedRepositoryInter
                 $query = $query->orderBy($field, $direction);
             }
         }
-        return $query->get();
+        return $query->paginate(Helper::getPerPage(), ["*"], Helper::getPageName(), Helper::getCurrentPage());
     }
     public function getByNewfeedId(int $userId, int $newfeedId): ?NewFeed
     {

@@ -31,7 +31,7 @@ class NewFeedController extends Controller
 
         $newfeedList = $this->newfeedRepository->findUserNewfeeds($this->currentUser->id, $newfeed);
 
-        return $this->success(__('general.success'), $newfeedList);
+        return $this->successWithPaginate(__('general.success'), $newfeedList);
     }
 
 

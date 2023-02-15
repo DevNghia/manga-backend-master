@@ -20,7 +20,7 @@ interface MangaRepositoryInterface
      * @param int $mangaId
      * @return Manga|null
      */
-    public function getById(int $mangaId):? Manga;
+    public function getById(int $mangaId): ?Manga;
 
-    public function getAndUpdateViewerManga(int $mangaId):? MangaView;
+    public function getAndUpdateViewerManga(int $mangaId): ?MangaView;
 }
